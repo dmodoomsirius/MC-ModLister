@@ -38,7 +38,7 @@ public class ModLister
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-
+        // Nothing to see here.
     }
 
     @EventHandler
@@ -67,7 +67,9 @@ public class ModLister
             writer.close();
 
             if (!file.exists())
+            {
                 file.createNewFile();
+            }
 
             FMLLog.log(Level.INFO, MOD_NAME + " wrote mod data properly.");
         }
@@ -84,13 +86,13 @@ public class ModLister
         builder.append(container.getName());
         builder.append(" (");
         builder.append(container.getModId());
-        builder.append(") |  Version: ");
+        builder.append(") ;  Version: ");
         builder.append(container.getVersion());
-        builder.append(" | Loaded From ");
+        builder.append(" ; Loaded From ");
         builder.append(container.getSource().getName());
         builder.append(" on ");
         builder.append(container.getSource() == null || container.getSource().getParentFile() == null ? "N/A" : container.getSource().getParentFile().getName());
-        builder.append(" | URL: ");
+        builder.append(" ; URL: ");
         builder.append(container.getMetadata().url.isEmpty() ? "N/A" : container.getMetadata().url);
         builder.append("\n");
 
