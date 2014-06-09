@@ -1,0 +1,114 @@
+buildscript {
+    repositories {
+        mavenCentral()
+		mavenLocal()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = 'ForgeFS'
+            url = 'http://files.minecraftforge.net/maven'
+        }
+		maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+    }
+}
+
+apply plugin: 'forge'
+ext.buildProps = file "build.properties"
+
+buildProps.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "MC${config.version.minecraft}-F${config.version.forge}_v${config.version.mod.major}.${config.version.mod.minor}${config.version.mod.revis}"
+group = "modlister"
+archivesBaseName = "ModLister"
+
+minecraft {
+    version = "${config.version.minecraft}-${config.version.forge}"
+	
+	replaceIn "ModLister.java"
+	replace "@MAJOR@", config.version.mod.major
+	replace "@MINOR@", config.version.mod.minor
+	replace "@REVIS@", config.version.mod.revis
+	
+	if (System.getenv("BUILD_NUMBER") != null) {
+		replace "@BUILD@", System.getenv("BUILD_NUMBER")
+	}
+	else
+	{
+		replace "@BUILD@", "[NIGHTLY]"
+	}
+	
+	if (project.hasProperty("mad_signature")) {
+        replace "@FINGERPRINT@", project.mad_signature
+	}
+}
+
+if (System.getenv("BUILD_NUMBER") != null) {
+    version += ".${System.getenv("BUILD_NUMBER")}";
+}
+else {
+	version = "MC${config.version.minecraft}-F${config.version.forge}_[NIGHTLY]"
+}
+
+processResources {
+	from 'build.properties'
+}
+
+task copyBuildXml(type: Copy) {
+    from 'build.properties'
+    into 'output'
+}
+
+task apiZip(type: Zip) {
+    classifier = 'api'
+    from sourceSets*.allSource
+    include 'modlister/api/**'
+    destinationDir = file 'output'
+}
+
+artifacts {
+    archives apiZip
+}
+
+jar {
+    dependsOn copyBuildXml
+    classifier = 'universal'
+    destinationDir = file 'output'
+    manifest {
+        attributes "Implementation-Version": version
+    }
+}
+
+repositories {
+    maven {
+        name 'ForgeFS'
+        url 'http://files.minecraftforge.net/maven'
+     }
+}
+
+import net.minecraftforge.gradle.tasks.dev.ChangelogTask
+import net.minecraftforge.gradle.common.Constants
+import net.minecraftforge.gradle.delayed.*
+
+if (System.getenv("BUILD_NUMBER") != null) {
+	build.dependsOn "apiZip", "copyBuildXml"
+}
+else
+{
+	build.dependsOn "apiZip", "copyBuildXml"
+}
+
+wrapper {
+    version = "1.8"
+}
