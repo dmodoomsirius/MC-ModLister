@@ -71,12 +71,12 @@ public class ModLister
                 file.createNewFile();
             }
 
-            FMLLog.log(Level.INFO, MOD_NAME + " wrote mod data properly.");
+           // FMLLog.log(Level.INFO, MOD_NAME + " wrote mod data properly.");
         }
         catch (IOException e)
         {
-            FMLLog.log(Level.WARNING, MOD_NAME + " failed to write mod data!");
-            e.printStackTrace();
+          //  FMLLog.log(Level.WARNING, MOD_NAME + " failed to write mod data!");
+          //  e.printStackTrace();
         }
     }
 
