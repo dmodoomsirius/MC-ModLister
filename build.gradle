@@ -1,22 +1,18 @@
+println "blah"
 buildscript {
     repositories {
         mavenCentral()
-		mavenLocal()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
         maven {
-            name = 'ForgeFS'
-            url = 'http://files.minecraftforge.net/maven'
-        }
-		maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -27,6 +23,14 @@ buildProps.withReader {
     def prop = new Properties()
     prop.load(it)
     ext.config = new ConfigSlurper().parse prop
+}
+
+task makePretty(type: Delete) {
+  delete 'output'
+}
+
+clean{
+   dependsOn makePretty
 }
 
 version = "MC${config.version.minecraft}-F${config.version.forge}_v${config.version.mod.major}.${config.version.mod.minor}${config.version.mod.revis}"

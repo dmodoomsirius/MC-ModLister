@@ -17,3 +17,6 @@ output/
 bin/
 .classpath
 .project
+
+src/main/java/modlister/ModLister.java
+.idea/
