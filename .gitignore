@@ -20,3 +20,4 @@ bin/
 
 src/main/java/modlister/ModLister.java
 .idea/
+!gradle/wrapper/*.jar
