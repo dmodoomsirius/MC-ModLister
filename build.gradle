@@ -23,7 +23,7 @@ plugins {
   id "net.franz-becker.gradle-lombok" version "1.3"
 }
 
-apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/buildScripts/index.gradle'
+apply from: 'https://raw.githubusercontent.com/BuiltBrokenModding/BuiltBrokenScripts/dmodtest/index.gradle'
 
 minecraft {
 	replaceIn "ModLister.java"
