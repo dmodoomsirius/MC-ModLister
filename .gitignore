@@ -18,6 +18,7 @@ bin/
 .classpath
 .project
 
-src/main/java/modlister/ModLister.java
 .idea/
 !gradle/wrapper/*.jar
+build/
+CompiledWith.txt
